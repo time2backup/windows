@@ -46,6 +46,11 @@ echo Copy time2backup executable...
 xcopy /Y bin\time2backup.bat %install_path%
 if %errorlevel% NEQ 0 goto endError
 
+echo.
+echo Copy uninstall script...
+xcopy /Y bin\uninstall.bat %install_path%
+if %errorlevel% NEQ 0 goto endError
+
 rem copy link
 echo.
 echo Create time2backup link...
