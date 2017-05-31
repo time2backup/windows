@@ -32,23 +32,23 @@ echo.
 echo Install into %install_path%...
 
 echo Running cygwin installer...
-bin\cygwin-setup.exe --quiet-mode --wait --root %install_path%\cygwin -P rsync -P nano --upgrade-also --no-startmenu --no-desktop
+%current_path%\bin\cygwin-setup.exe --quiet-mode --wait --root %install_path%\cygwin -P rsync -P nano --upgrade-also --no-startmenu --no-desktop
 set exitcode=%errorlevel%
 if %errorlevel% NEQ 0 goto endError
 
 echo.
 echo Copy time2backup files...
-xcopy /E /I /Y src %install_path%\cygwin\opt\time2backup
+xcopy /E /I /Y %current_path%\src %install_path%\cygwin\opt\time2backup
 if %errorlevel% NEQ 0 goto endError
 
 echo.
 echo Copy time2backup executable...
-xcopy /Y bin\time2backup.bat %install_path%
+xcopy /Y %current_path%\bin\time2backup.bat %install_path%
 if %errorlevel% NEQ 0 goto endError
 
 echo.
 echo Copy uninstall script...
-xcopy /Y bin\uninstall.bat %install_path%
+xcopy /Y %current_path%\bin\uninstall.bat %install_path%
 if %errorlevel% NEQ 0 goto endError
 
 rem copy link
