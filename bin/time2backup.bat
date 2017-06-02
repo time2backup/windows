@@ -27,7 +27,7 @@ echo time2backup for Windows
 echo.
 
 rem run time2backup into cygwin
-cygwin\bin\bash.exe --login -i /opt/time2backup/time2backup.sh %*
+cygwin\bin\bash.exe --login -i /opt/time2backup/time2backup.sh -p %*
 
 rem get result of the command
 set exitcode=%errorlevel%

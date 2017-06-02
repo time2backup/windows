@@ -18,7 +18,8 @@ rem #
 rem clear screen
 cls
 
-set install_path=C:\time2backup
+rem Get current path (time2backup install)
+set current_path=%~dp0
 
 
 rem #
@@ -29,12 +30,11 @@ echo time2backup uninstaller
 echo.
 
 set /p confirm="Are you sure you want to uninstall time2backup? (y/N) "
-echo %confirm%
 if %confirm%==y (goto uninstall) else goto endExit
 
 :uninstall
-echo Removing %install_path%...
-del /S /F /Q %install_path%
+echo Removing files...
+del /s /f /q %current_path%
 if %errorlevel% NEQ 0 goto endError
 
 
