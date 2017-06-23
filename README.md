@@ -1,12 +1,29 @@
-# time2backup for Windows
+# time2backup package for Windows
 
-A port for Windows using cygwin.
+A port of [time2backup](https://time2backup.github.io/) for Windows using [Cygwin](https://www.cygwin.com).
 
-## Install
-Run the `install.bat` file
+## Download and install
+1. [Download time2backup here](https://time2backup.github.io/)
+2. Uncompress archive where you want
+3. Double click on the `install.bat` file
+4. When done, you can remove the installer files.
 
-## Usage
-Run the `time2backup.bat` file
+## How to use it
+1. Run the `time2backup.bat` file or double click on time2backup icon
+2. Follow the instructions.
 
 ## Uninstall
-Run the `uninstall.bat` file
+Run the `uninstall.bat` file.
+
+## Documentation
+For global usage, see the [user manual](docs/user_manual.md).
+
+## License
+This project is licensed under the MIT License. See [LICENSE.md](LICENSE.md) for the full license text.
+
+## Credits
+Author: Jean Prunneaux http://jean.prunneaux.com
+
+Website: https://time2backup.github.io
+
+Source code: https://github.com/time2backup/windows
