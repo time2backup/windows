@@ -15,8 +15,10 @@ A port of [time2backup](https://time2backup.github.io/) for Windows using [Cygwi
 ## Uninstall
 Run the `uninstall.bat` file.
 
-## Documentation
-For global usage, see the [user manual](docs/user_manual.md).
+## Developers: how to build windows package
+1. [Download time2backup archive](https://time2backup.github.io/) for Linux (the sources without git files)
+2. Put time2backup folder into `files/`
+3. Your package is ready, you can remove the `.git` directory and archive it to a zip file.
 
 ## License
 This project is licensed under the MIT License. See [LICENSE.md](LICENSE.md) for the full license text.
