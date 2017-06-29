@@ -7,7 +7,7 @@ rem #  Website: https://time2backup.github.io
 rem #  MIT License
 rem #  Copyright (c) 2017 Jean Prunneaux
 rem #
-rem #  Version 0.2.0 (2017-06-08)
+rem #  Version 0.3.0 (2017-06-29)
 rem #
 
 
@@ -18,7 +18,9 @@ rem #
 rem clear screen
 cls
 
+rem init variables
 set current_path=%~dp0
+
 
 rem #
 rem #  Main program
@@ -28,27 +30,6 @@ echo time2backup for Windows
 echo.
 
 rem run time2backup into cygwin
-%current_path%\cygwin\bin\bash.exe --login -i /opt/time2backup/time2backup.sh -p -C -c "%AppData%\time2backup" %*
+%current_path%\cygwin\bin\bash.exe --login -i /opt/time2backup/time2backup.sh -c "%AppData%\time2backup" -p %*
 
-rem get result of the command
-set exitcode=%errorlevel%
-if %exitcode% NEQ 0 goto endError
-
-
-rem #
-rem #  End of script
-rem #
-
-:endOK
-echo.
-echo Finised with success!
-goto endScript
-
-:endError
-echo.
-echo Finished with errors (exit code: %exitcode%)
-echo Please scroll up to see details
-
-:endScript
-echo.
-pause
+exit /b %errorlevel%

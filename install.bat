@@ -7,7 +7,7 @@ rem #  Website: https://time2backup.github.io
 rem #  MIT License
 rem #  Copyright (c) 2017 Jean Prunneaux
 rem #
-rem #  Version 0.2.0 (2017-06-08)
+rem #  Version 0.3.0 (2017-06-29)
 rem #
 
 
@@ -22,26 +22,28 @@ rem set paths
 set current_path=%~dp0
 set libbash_gui=%current_path%\files\time2backup\libbash\inc\libbash_gui.vbs
 set default_path=%SystemDrive%\time2backup
-set install_path=
-set desktop_icon=false
+set install_path=%default_path%
+set shortcuts=false
+set exitcode=0
+
 
 rem #
 rem #  Main program
 rem #
 
-echo Install time2backup
+rem if path specified,
+if not "%1"=="" (set install_path=%1)
+
+echo time2backup installer
 echo.
 
-set /p install_path="Choose an install path WITHOUT SPACES [%default_path%]: "
-if not "%install_path%"=="" goto install
+echo Waiting for confirmation dialog...
+cscript /NoLogo %libbash_gui% lbg_yesno "Install time2backup in %install_path% ? To change path, run install.bat with custom path." "time2backup installer"
+if %errorlevel% neq 0 goto endCancel
 
 echo.
-echo Do you want to create a desktop icon?
-set /p confirm="You need to run this script as administrator (y/N) "
-if "%confirm%"=="y" set desktop_icon=true
-
-rem default path
-set install_path=%default_path%
+cscript /NoLogo %libbash_gui% lbg_yesno "Do you want to create menu shortcut and desktop icon?" "time2backup installer" true
+if %errorlevel%==0 set shortcuts=true
 
 :install
 echo Install into %install_path%...
@@ -79,30 +81,57 @@ echo link.Save
 cscript /NoLogo "%current_path%\files\create_link.vbs"
 if %errorlevel% NEQ 0 goto endError
 
+
 rem create start menu shortcut
+if %shortcuts%==false goto endOK
+
 echo.
 echo Create start menu shortcut...
+
+rem try to install for all users
 xcopy /y "%install_path%\time2backup.lnk" "%AllUsersProfile%\Microsoft\Windows\Start Menu\Programs\Accessories\"
+if %errorlevel%==0 goto desktopIcon
+
+rem if not administrator
+echo Failed. Creating shortcut only for current user.
+
+xcopy /y "%install_path%\time2backup.lnk" "%AppData%\Microsoft\Windows\Start Menu\Programs\Accessories\"
 if %errorlevel% NEQ 0 echo Failed. Please create shortcut manually.
 
-rem create desktop icon
-if %desktop_icon%==false goto endOK
+
+:desktopIcon
 echo.
 echo Create desktop icon...
-xcopy /y "%install_path%\time2backup.lnk" "%SystemDrive%\Users\Public\Desktop\"
-if %errorlevel% NEQ 0 echo Failed. Please create shortcut manually.
 
+rem try to install for all users
+xcopy /y "%install_path%\time2backup.lnk" "%SystemDrive%\Users\Public\Desktop\"
+if %errorlevel%==0 goto endOK
+
+rem if not administrator
+echo Failed. Creating icon only for current user.
+
+xcopy /y "%install_path%\time2backup.lnk" "%UserProfile%\Desktop\"
+if %errorlevel% NEQ 0 echo Failed. Please create icon manually.
+
+goto endOK
 
 rem #
 rem #  End of script
 rem #
 
+:endCancel
+echo Installation cancelled
+goto endScript
+
 :endOK
 echo.
 cscript /NoLogo "%libbash_gui%" lbg_display_info "Install finished" "time2backup installer"
-exit
+goto endScript
 
 :endError
 echo.
 cscript /NoLogo "%libbash_gui%" lbg_display_error "Install failed!" "time2backup installer"
-exit 1
+set exitcode=1
+
+:endScript
+exit /b %exitcode%
