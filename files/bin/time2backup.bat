@@ -30,6 +30,6 @@ echo time2backup for Windows
 echo.
 
 rem run time2backup into cygwin
-%current_path%\cygwin\bin\bash.exe --login -i /opt/time2backup/time2backup.sh -c "%AppData%\time2backup" -p %*
+%current_path%\cygwin\bin\bash.exe --login -i /opt/time2backup/time2backup.sh -c "%AppData%\time2backup" %*
 
 exit /b %errorlevel%

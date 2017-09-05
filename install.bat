@@ -60,6 +60,11 @@ xcopy /e /i /y /q "%current_path%\files\time2backup" "%install_path%\cygwin\opt\
 if %errorlevel% NEQ 0 goto endError
 
 echo.
+echo Copy default configuration file...
+xcopy /y /q "%current_path%\files\default.conf" "%install_path%\cygwin\opt\time2backup\config\default.conf"
+if %errorlevel% NEQ 0 goto endError
+
+echo.
 echo Copy time2backup files...
 xcopy /s /y /q "%current_path%\files\bin" "%install_path%"
 if %errorlevel% NEQ 0 goto endError
