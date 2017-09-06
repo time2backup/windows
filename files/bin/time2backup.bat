@@ -7,7 +7,7 @@ rem #  Website: https://time2backup.github.io
 rem #  MIT License
 rem #  Copyright (c) 2017 Jean Prunneaux
 rem #
-rem #  Version 0.3.0 (2017-06-29)
+rem #  Version 1.1.0 (2017-09-06)
 rem #
 
 
@@ -27,6 +27,9 @@ rem #  Main program
 rem #
 
 echo time2backup for Windows
+echo.
+
+echo Starting...
 echo.
 
 rem run time2backup into cygwin
