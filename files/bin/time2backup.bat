@@ -10,29 +10,14 @@ rem #
 rem #  Version 1.1.0 (2017-09-06)
 rem #
 
-
-rem #
-rem #  Init
-rem #
-
 rem clear screen
 cls
 
 rem init variables
 set current_path=%~dp0
 
-
-rem #
-rem #  Main program
-rem #
-
-echo time2backup for Windows
-echo.
-
-echo Starting...
-echo.
-
 rem run time2backup into cygwin
 %current_path%\cygwin\bin\bash.exe --login -i /opt/time2backup/time2backup.sh -c "%AppData%\time2backup" %*
 
+rem forward exit code
 exit /b %errorlevel%
