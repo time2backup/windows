@@ -5,14 +5,15 @@ A port of [time2backup](https://time2backup.github.io/) for Windows using [Cygwi
 ## Download and install
 1. [Download time2backup here](https://time2backup.github.io/)
 2. Uncompress archive where you want
-3. See the [README](package/README.md) file in the package for next steps.
+3. Double click on the `install.bat` file
+4. When done, you can remove the installer files.
 
-## Developers: how to build windows package
-You must be on Linux or macOS to build package.
+## How to use it
+1. Run the `time2backup.bat` file or double click on time2backup icon
+2. Follow the instructions.
 
-1. [Download time2backup archive](https://time2backup.github.io/) for Linux (the sources without git files)
-2. Put time2backup folder in the root of this directory
-3. Your package is ready, you can remove the `.git` directory and archive it to a zip file.
+## Uninstall
+Run the `uninstall.bat` file.
 
 ## License
 This project is licensed under the MIT License. See [LICENSE.md](LICENSE.md) for the full license text.
@@ -21,5 +22,3 @@ This project is licensed under the MIT License. See [LICENSE.md](LICENSE.md) for
 Author: Jean Prunneaux http://jean.prunneaux.com
 
 Website: https://time2backup.github.io
-
-Source code: https://github.com/time2backup/windows

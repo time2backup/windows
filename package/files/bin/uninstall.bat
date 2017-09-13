@@ -7,8 +7,6 @@ rem #  Website: https://time2backup.github.io
 rem #  MIT License
 rem #  Copyright (c) 2017 Jean Prunneaux
 rem #
-rem #  Version 1.1.0 (2017-09-06)
-rem #
 
 
 rem #
