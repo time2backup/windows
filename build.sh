@@ -1,29 +1,16 @@
 #!/bin/bash
 
 #
+#  Build script for time2backup Windows package
 #
+#  Website: https://time2backup.github.io
+#  MIT License
+#  Copyright (c) 2017 Jean Prunneaux
 #
 
+
+# get current_directory
 current_directory=$(dirname "$0")
-
-
-###############
-#  FUNCTIONS  #
-###############
-
-# print usage
-usage() {
-	echo "Usage: $(basename "$0") [OPTIONS]"
-	echo
-	echo "Options:"
-	echo "   -v VERSION  tag a version (default to branch name)"
-	echo "   -h          print this help"
-}
-
-
-##################
-#  MAIN PROGRAM  #
-##################
 
 # test if time2backup is there
 if ! [ -d "$current_directory/time2backup" ] ; then

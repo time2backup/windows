@@ -33,7 +33,7 @@ rem #
 rem if path specified,
 if not "%1"=="" (set install_path=%1)
 
-echo time2backup installer
+echo time2backup %version% installer
 echo.
 
 echo Waiting for confirmation dialog...
