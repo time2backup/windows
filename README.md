@@ -12,7 +12,7 @@ You must be on Linux or macOS to build package.
 
 1. [Download time2backup archive](https://time2backup.github.io/) for Linux (the sources without git files)
 2. Put time2backup folder in the root of this directory
-3. Your package is ready, you can remove the `.git` directory and archive it to a zip file.
+3. Run the `build.sh` script and get your archives in the `build` directory.
 
 ## License
 This project is licensed under the MIT License. See [LICENSE.md](LICENSE.md) for the full license text.

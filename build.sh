@@ -43,9 +43,9 @@ if [ $? != 0 ] ; then
 fi
 
 echo "Copy time2backup sources..."
-cp -rp "$current_directory/time2backup" "$current_directory/build/package/files/"
+cp -rp "$current_directory/time2backup" "$package/files/"
 if [ $? != 0 ] ; then
-	echo "ERROR while copying package files. Please verify your access rights."
+	echo "ERROR while copying sources files. Please verify your access rights."
 	exit 1
 fi
 
@@ -112,7 +112,7 @@ for arch in 32 64 ; do
 	# move archive above
 	mv "$archive" ../"$version"
 	if [ $? != 0 ] ; then
-		echo "ERROR: Failed to go move the archive above!"
+		echo "ERROR: Failed to move the archive!"
 		exit 1
 	fi
 done
@@ -120,7 +120,7 @@ done
 # going up
 cd ../"$version"
 if [ $? != 0 ] ; then
-	echo "ERROR: Failed to go into the $package directory!"
+	echo "ERROR: Failed to go into the archive directory!"
 	exit 4
 fi
 
