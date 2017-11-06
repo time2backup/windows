@@ -20,8 +20,7 @@ rem set variables
 set version=
 set current_path=%~dp0
 set libbash_gui=%current_path%\files\time2backup\libbash\inc\libbash_gui.vbs
-set default_path=%SystemDrive%\time2backup
-set install_path=%default_path%
+set install_path=%SystemDrive%\time2backup
 set shortcuts=false
 set exitcode=0
 
@@ -56,11 +55,6 @@ rem run a first
 echo.
 echo Copy time2backup files...
 xcopy /e /i /y /q "%current_path%\files\time2backup" "%install_path%\cygwin\opt\time2backup"
-if %errorlevel% NEQ 0 goto endError
-
-echo.
-echo Copy default configuration file...
-xcopy /y /q "%current_path%\files\default.conf" "%install_path%\cygwin\opt\time2backup\config\"
 if %errorlevel% NEQ 0 goto endError
 
 echo.
