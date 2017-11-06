@@ -63,13 +63,6 @@ if [ $? != 0 ] ; then
 	exit 3
 fi
 
-echo "Modify version number in default.conf..."
-sed -i "s/time2backup default configuration file v.*/time2backup default configuration file v$version/" files/default.conf
-if [ $? != 0 ] ; then
-	echo "...Failed!"
-	exit 3
-fi
-
 # build archive for each arch
 for arch in 32 64 ; do
 
