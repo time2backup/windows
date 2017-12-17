@@ -50,11 +50,11 @@ echo Running cygwin installer...
 "%current_path%\files\cygwin-setup.exe" --quiet-mode --wait -s http://mirrors.kernel.org/sourceware/cygwin --root "%install_path%\cygwin" -P rsync -P nano --upgrade-also --no-startmenu --no-desktop
 if %errorlevel% NEQ 0 goto endError
 
-rem run a first
+rem copy files
 
 echo.
 echo Copy time2backup files...
-xcopy /e /i /y /q "%current_path%\files\time2backup" "%install_path%\cygwin\opt\time2backup"
+xcopy /e /i /y /q "%current_path%\files\time2backup" "%install_path%\cygwin\usr\src\time2backup"
 if %errorlevel% NEQ 0 goto endError
 
 echo.
@@ -62,12 +62,8 @@ echo Copy windows files...
 xcopy /s /y /q "%current_path%\files\bin" "%install_path%"
 if %errorlevel% NEQ 0 goto endError
 
-echo.
-echo Install time2backup...
-"%install_path%\cygwin\bin\bash.exe" --login -i /opt/time2backup/time2backup.sh install
-if %errorlevel% NEQ 0 goto endError
-
 rem create shortcut
+
 echo.
 echo Create time2backup links...
 
@@ -117,6 +113,7 @@ xcopy /y "%install_path%\time2backup.lnk" "%UserProfile%\Desktop\"
 if %errorlevel% NEQ 0 echo Failed. Please create icon manually.
 
 goto endOK
+
 
 rem #
 rem #  End of script
