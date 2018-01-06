@@ -18,24 +18,65 @@ if ! [ -d "$current_directory/time2backup" ] ; then
 	exit 1
 fi
 
-# get time2backup version
-version=$(grep "^version=" "$current_directory/time2backup/time2backup.sh" | head -1 | cut -d= -f2)
+
+###############
+#  FUNCTIONS  #
+###############
+
+# Print usage
+print_help() {
+	echo "Usage: $0 [OPTIONS]"
+	echo "Options:"
+	echo "   -v, --version VERSION  Specify a version"
+	echo "   -h, --help             Print this help"
+}
+
+
+##################
+#  MAIN PROGRAM  #
+##################
+
+# get options
+while [ $# -gt 0 ] ; do
+	case $1 in
+		-v|--version)
+			if [ -z "$2" ] ; then
+				print_help
+				exit 1
+			fi
+			version=$2
+			;;
+		*)
+			break
+			;;
+	esac
+	shift
+done
+
+# prompt to choose version
 if [ -z "$version" ] ; then
-	echo "ERROR: Cannot get time2backup version!"
-	exit 1
+	version=$(grep "^version=" "$current_directory/time2backup/time2backup.sh" | head -1 | cut -d= -f2)
+
+	echo -n "Choose version: [$version] "
+	read version_user
+	if [ -n "$version_user" ] ; then
+		version=$version_user
+	fi
+
+	echo
 fi
 
 # create build environment
 mkdir -p "$current_directory/build"
 if [ $? != 0 ] ; then
 	echo "ERROR while creating build directory. Please verify your access rights."
-	exit 1
+	exit 3
 fi
 
 package="$current_directory/build/package"
 
-# clear and copy package files
-echo "Copy package..."
+# clean and copy package files
+echo "Clean and copy package..."
 rm -rf "$package" && cp -rp "$current_directory/package" "$current_directory/build/"
 if [ $? != 0 ] ; then
 	echo "ERROR while copying package files. Please verify your access rights."
@@ -111,23 +152,14 @@ for arch in 32 64 ; do
 done
 
 # going up
-cd ../"$version"
+cd ..
 if [ $? != 0 ] ; then
 	echo "ERROR: Failed to go into the archive directory!"
 	exit 4
 fi
 
-echo
-echo "Generating checksums..."
-sha256sum time2backup-${version}_win*.zip > sha256sum.txt
-if [ $? != 0 ] ; then
-	echo "...Failed!"
-	exit 6
-fi
-
-echo
 echo "Clean files..."
-rm -rf ../package
+rm -rf package
 
 echo
-echo "Ready to deploy!"
+echo "Package is ready!"
