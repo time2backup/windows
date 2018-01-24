@@ -3,9 +3,9 @@
 rem #
 rem #  time2backup install script for Windows
 rem #
-rem #  Website: https://time2backup.github.io
+rem #  Website: https://time2backup.org
 rem #  MIT License
-rem #  Copyright (c) 2017 Jean Prunneaux
+rem #  Copyright (c) 2017-2018 Jean Prunneaux
 rem #
 
 
