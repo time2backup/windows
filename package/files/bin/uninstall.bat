@@ -20,7 +20,7 @@ rem Get current path (time2backup install)
 set current_path=%~dp0
 
 rem dialogs library
-set libbash_gui=%current_path%\cygwin\opt\time2backup\libbash\inc\libbash_gui.vbs
+set libbash_gui=%current_path%\cygwin\usr\src\time2backup\libbash\inc\libbash_gui.vbs
 
 rem default variables
 set exitcode=0

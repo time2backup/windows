@@ -10,7 +10,7 @@ A port of [time2backup](https://time2backup.org) for Windows using [Cygwin](http
 ## Developers: how to build windows package
 You must be on Linux or macOS to build package.
 
-1. [Download time2backup archive](https://time2backup.org) for Linux (the sources without git files)
+1. [Download time2backup archive](https://time2backup.org) (sources without git files)
 2. Put time2backup folder in the root of this directory
 3. Run the `build.sh` script and get your archives in the `build` directory.
 
