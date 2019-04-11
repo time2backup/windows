@@ -1,33 +1,37 @@
 #!/bin/bash
-
 #
 #  Build script for time2backup Windows package
 #
 #  Website: https://time2backup.org
 #  MIT License
-#  Copyright (c) 2017 Jean Prunneaux
+#  Copyright (c) 2017-2019 Jean Prunneaux
 #
 
 
-# get current_directory
-current_directory=$(dirname "$0")
+# go into current directory
+cd "$(dirname "$0")"
+if [ $? != 0 ] ; then
+	echo "ERROR: cannot go into current directory"
+	exit 1
+fi
 
-# test if time2backup is there
-if ! [ -d "$current_directory/time2backup" ] ; then
-	echo "ERROR: you must put time2backup sources in the time2backup directory!"
+# test if sources are there
+if ! [ -d src ] ; then
+	echo "ERROR: you must put your sources in the src directory!"
 	exit 1
 fi
 
 
-###############
-#  FUNCTIONS  #
-###############
+#
+#  Functions
+#
 
 # Print usage
 print_help() {
 	echo "Usage: $0 [OPTIONS]"
 	echo "Options:"
 	echo "   -v, --version VERSION  Specify a version"
+	echo "   -f, --force            Force mode"
 	echo "   -h, --help             Print this help"
 }
 
@@ -45,6 +49,14 @@ while [ $# -gt 0 ] ; do
 				exit 1
 			fi
 			version=$2
+			shift
+			;;
+		-f|--force)
+			# TODO: force mode
+			;;
+		-h|--help)
+			print_help
+			exit
 			;;
 		*)
 			break
@@ -55,7 +67,7 @@ done
 
 # prompt to choose version
 if [ -z "$version" ] ; then
-	version=$(grep "^version=" "$current_directory/time2backup/time2backup.sh" | head -1 | cut -d= -f2)
+	version=$(grep 'version=' src/time2backup.sh | head -1 | cut -d= -f2)
 
 	echo -n "Choose version: [$version] "
 	read version_user
@@ -67,37 +79,36 @@ if [ -z "$version" ] ; then
 fi
 
 # create build environment
-mkdir -p "$current_directory/build"
+mkdir -p archives
 if [ $? != 0 ] ; then
-	echo "ERROR while creating build directory. Please verify your access rights."
+	echo "ERROR while creating archives directory. Please verify your access rights."
 	exit 3
 fi
 
-package="$current_directory/build/package"
+build_directory=archives/build
 
 # clean and copy package files
 echo "Clean and copy package..."
-rm -rf "$package" && cp -rp "$current_directory/package" "$current_directory/build/"
+rm -rf "$build_directory" && cp -rp package "$build_directory"
 if [ $? != 0 ] ; then
 	echo "ERROR while copying package files. Please verify your access rights."
 	exit 1
 fi
 
 echo "Copy time2backup sources..."
-cp -rp "$current_directory/time2backup" "$package/files/"
+cp -rp src "$build_directory"/files/time2backup
 if [ $? != 0 ] ; then
 	echo "ERROR while copying sources files. Please verify your access rights."
 	exit 1
 fi
 
 # go into the copied package directory
-cd "$package"
-if [ $? != 0 ] ; then
-	echo "ERROR: Failed to go into the $package directory!"
+if ! cd "$build_directory" ; then
+	echo "ERROR: Failed to go into the build directory!"
 	exit 4
 fi
 
-echo "Modify version number in install.bat..."
+echo "Set version number in install.bat..."
 sed -i "s/set version=/set version=$version/" install.bat
 if [ $? != 0 ] ; then
 	echo "...Failed!"
@@ -108,14 +119,12 @@ fi
 for arch in 32 64 ; do
 
 	echo
-	echo "Building $arch bits package..."
+	echo "Building ${arch}bits package..."
 
 	# set cygwin installer
-	cygwin="setup-x86"
-	if [ $arch == 64 ] ; then
-		cygwin+="_64"
-	fi
-	cygwin+=".exe"
+	cygwin='setup-x86'
+	[ $arch == 64 ] && cygwin+='_64'
+	cygwin+='.exe'
 
 	echo
 	echo "Copy cygwin installer..."
@@ -126,9 +135,9 @@ for arch in 32 64 ; do
 	fi
 
 	# set archive name
-	archive="time2backup-${version}_win$arch.zip"
+	archive=time2backup-${version}_win${arch}.zip
 
-	echo "Archive package..."
+	echo "ZIP package..."
 
 	zip -r "$archive" * > /dev/null
 	if [ $? != 0 ] ; then
@@ -136,14 +145,14 @@ for arch in 32 64 ; do
 		exit 5
 	fi
 
-	# create archive directory
+	# create version directory
 	mkdir -p ../"$version"
 	if [ $? != 0 ] ; then
-		echo "ERROR: Cannot create archive directory!"
+		echo "ERROR: Cannot create version directory!"
 		exit 1
 	fi
 
-	# move archive above
+	# move zip above
 	mv "$archive" ../"$version"
 	if [ $? != 0 ] ; then
 		echo "ERROR: Failed to move the archive!"
@@ -152,14 +161,13 @@ for arch in 32 64 ; do
 done
 
 # going up
-cd ..
-if [ $? != 0 ] ; then
+if ! cd .. ; then
 	echo "ERROR: Failed to go into the archive directory!"
 	exit 4
 fi
 
 echo "Clean files..."
-rm -rf package
+rm -rf build
 
 echo
 echo "Package is ready!"
