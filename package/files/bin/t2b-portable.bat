@@ -5,7 +5,7 @@ rem #  time2backup portable script for Windows
 rem #
 rem #  Website: https://time2backup.org
 rem #  MIT License
-rem #  Copyright (c) 2017-2019 Jean Prunneaux
+rem #  Copyright (c) 2017-2020 Jean Prunneaux
 rem #
 
 rem clear screen

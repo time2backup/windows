@@ -5,7 +5,7 @@ rem #  time2backup uninstall script for Windows
 rem #
 rem #  Website: https://time2backup.org
 rem #  MIT License
-rem #  Copyright (c) 2017-2018 Jean Prunneaux
+rem #  Copyright (c) 2017-2020 Jean Prunneaux
 rem #
 
 
@@ -38,7 +38,6 @@ if %errorlevel% neq 0 goto endCancel
 
 cscript /NoLogo "%libbash_gui%" lbg_yesno "Do you want to delete menu shortcut and desktop icon?" "time2backup uninstall" true
 if %errorlevel% neq 0 goto uninstall
-
 
 rem delete start menu shortcut (trying for all users and current user)
 echo.
