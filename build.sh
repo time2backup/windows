@@ -4,7 +4,7 @@
 #
 #  Website: https://time2backup.org
 #  MIT License
-#  Copyright (c) 2017-2019 Jean Prunneaux
+#  Copyright (c) 2017-2020 Jean Prunneaux
 #
 
 
@@ -31,7 +31,6 @@ print_help() {
 	echo "Usage: $0 [OPTIONS]"
 	echo "Options:"
 	echo "   -v, --version VERSION  Specify a version"
-	echo "   -f, --force            Force mode"
 	echo "   -h, --help             Print this help"
 }
 
@@ -50,9 +49,6 @@ while [ $# -gt 0 ] ; do
 			fi
 			version=$2
 			shift
-			;;
-		-f|--force)
-			# TODO: force mode
 			;;
 		-h|--help)
 			print_help
