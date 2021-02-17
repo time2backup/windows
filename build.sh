@@ -4,16 +4,12 @@
 #
 #  Website: https://time2backup.org
 #  MIT License
-#  Copyright (c) 2017-2020 Jean Prunneaux
+#  Copyright (c) 2017-2021 Jean Prunneaux
 #
 
 
 # go into current directory
-cd "$(dirname "$0")"
-if [ $? != 0 ] ; then
-	echo "ERROR: cannot go into current directory"
-	exit 1
-fi
+cd "$(dirname "$0")" || exit 1
 
 # test if sources are there
 if ! [ -d src ] ; then
@@ -99,10 +95,7 @@ if [ $? != 0 ] ; then
 fi
 
 # go into the copied package directory
-if ! cd "$build_directory" ; then
-	echo "ERROR: Failed to go into the build directory!"
-	exit 4
-fi
+cd "$build_directory" || exit 4
 
 echo "Set version number in install.bat..."
 sed -i "s/set version=/set version=$version/" install.bat
@@ -111,56 +104,36 @@ if [ $? != 0 ] ; then
 	exit 3
 fi
 
-# build archive for each arch
-for arch in 32 64 ; do
+echo
+echo "Building package..."
 
-	echo
-	echo "Building ${arch}bits package..."
+# set archive name
+archive=time2backup-${version}_win64.zip
 
-	# set cygwin installer
-	cygwin='setup-x86'
-	[ $arch == 64 ] && cygwin+='_64'
-	cygwin+='.exe'
+echo "ZIP package..."
 
-	echo
-	echo "Copy cygwin installer..."
-	cp -p ../../cygwin/$cygwin files/cygwin-setup.exe
-	if [ $? != 0 ] ; then
-		echo "...Failed!"
-		exit 1
-	fi
+zip -r "$archive" * > /dev/null
+if [ $? != 0 ] ; then
+	echo "...Failed!"
+	exit 5
+fi
 
-	# set archive name
-	archive=time2backup-${version}_win${arch}.zip
+# create version directory
+mkdir -p ../"$version"
+if [ $? != 0 ] ; then
+	echo "ERROR: Cannot create version directory!"
+	exit 1
+fi
 
-	echo "ZIP package..."
-
-	zip -r "$archive" * > /dev/null
-	if [ $? != 0 ] ; then
-		echo "...Failed!"
-		exit 5
-	fi
-
-	# create version directory
-	mkdir -p ../"$version"
-	if [ $? != 0 ] ; then
-		echo "ERROR: Cannot create version directory!"
-		exit 1
-	fi
-
-	# move zip above
-	mv "$archive" ../"$version"
-	if [ $? != 0 ] ; then
-		echo "ERROR: Failed to move the archive!"
-		exit 1
-	fi
-done
+# move zip above
+mv "$archive" ../"$version"
+if [ $? != 0 ] ; then
+	echo "ERROR: Failed to move the archive!"
+	exit 1
+fi
 
 # going up
-if ! cd .. ; then
-	echo "ERROR: Failed to go into the archive directory!"
-	exit 4
-fi
+cd .. || exit 4
 
 echo "Clean files..."
 rm -rf build

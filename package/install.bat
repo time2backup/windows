@@ -47,7 +47,7 @@ if %errorlevel%==0 set shortcuts=true
 echo Install into %install_path%...
 
 echo Running cygwin installer...
-"%current_path%\files\cygwin-setup.exe" --quiet-mode --wait -s http://mirrors.kernel.org/sourceware/cygwin --root "%install_path%\cygwin" -P rsync -P nano --upgrade-also --no-startmenu --no-desktop
+"%current_path%\files\setup-x86_64.exe" --quiet-mode --wait -s http://mirrors.kernel.org/sourceware/cygwin --root "%install_path%\cygwin" -P rsync -P nano --upgrade-also --no-startmenu --no-desktop
 if %errorlevel% NEQ 0 goto endError
 
 rem copy files
@@ -87,14 +87,18 @@ if %shortcuts%==false goto endOK
 echo.
 echo Create start menu shortcut...
 
+rem Delete old menu entries
+del /f "%AllUsersProfile%\Microsoft\Windows\Start Menu\Programs\Accessories\time2backup.lnk"
+del /f "%AppData%\Microsoft\Windows\Start Menu\Programs\Accessories\time2backup.lnk"
+
 rem try to install for all users
-xcopy /y "%install_path%\time2backup.lnk" "%AllUsersProfile%\Microsoft\Windows\Start Menu\Programs\Accessories\"
+xcopy /y "%install_path%\time2backup.lnk" "%AllUsersProfile%\Microsoft\Windows\Start Menu\Programs\"
 if %errorlevel%==0 goto desktopIcon
 
 rem if not administrator
 echo Failed. Creating shortcut only for current user.
 
-xcopy /y "%install_path%\time2backup.lnk" "%AppData%\Microsoft\Windows\Start Menu\Programs\Accessories\"
+xcopy /y "%install_path%\time2backup.lnk" "%AppData%\Microsoft\Windows\Start Menu\Programs\"
 if %errorlevel% NEQ 0 echo Failed. Please create shortcut manually.
 
 
