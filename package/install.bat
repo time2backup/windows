@@ -5,7 +5,7 @@ rem #  time2backup install script for Windows
 rem #
 rem #  Website: https://time2backup.org
 rem #  MIT License
-rem #  Copyright (c) 2017-2020 Jean Prunneaux
+rem #  Copyright (c) 2017-2021 Jean Prunneaux
 rem #
 
 
@@ -39,10 +39,6 @@ echo Waiting for confirmation dialog...
 cscript /NoLogo "%libbash_gui%" lbg_yesno "Install time2backup in %install_path% ? To change path, run install.bat with custom path." "time2backup installer"
 if %errorlevel% neq 0 goto endCancel
 
-echo.
-cscript /NoLogo "%libbash_gui%" lbg_yesno "Do you want to create menu shortcut and desktop icon?" "time2backup installer" true
-if %errorlevel%==0 set shortcuts=true
-
 :install
 echo Install into %install_path%...
 
@@ -65,7 +61,7 @@ if %errorlevel% NEQ 0 goto endError
 rem create shortcut
 
 echo.
-echo Create time2backup links...
+echo Create time2backup link...
 
 rem create temporary VBScript
 (echo Dim shell, link
@@ -73,16 +69,12 @@ echo Set shell = CreateObject^("WScript.shell"^)
 echo Set link = shell.CreateShortcut^("%install_path%\time2backup.lnk"^)
 echo link.Description = "Backup and restore your files"
 echo link.TargetPath = "%install_path%\time2backup.bat"
-echo link.IconLocation = "%install_path%\icon.ico"
+echo link.IconLocation = "%install_path%\icon_dark.ico"
 echo link.WorkingDirectory = "%install_path%"
 echo link.Save
 )> "%current_path%\files\create_link.vbs"
 cscript /NoLogo "%current_path%\files\create_link.vbs"
 if %errorlevel% NEQ 0 goto endError
-
-
-rem create start menu shortcut
-if %shortcuts%==false goto endOK
 
 echo.
 echo Create start menu shortcut...
@@ -93,28 +85,12 @@ del /f "%AppData%\Microsoft\Windows\Start Menu\Programs\Accessories\time2backup.
 
 rem try to install for all users
 xcopy /y "%install_path%\time2backup.lnk" "%AllUsersProfile%\Microsoft\Windows\Start Menu\Programs\"
-if %errorlevel%==0 goto desktopIcon
-
-rem if not administrator
-echo Failed. Creating shortcut only for current user.
-
-xcopy /y "%install_path%\time2backup.lnk" "%AppData%\Microsoft\Windows\Start Menu\Programs\"
-if %errorlevel% NEQ 0 echo Failed. Please create shortcut manually.
-
-
-:desktopIcon
-echo.
-echo Create desktop icon...
-
-rem try to install for all users
-xcopy /y "%install_path%\time2backup.lnk" "%SystemDrive%\Users\Public\Desktop\"
 if %errorlevel%==0 goto endOK
 
 rem if not administrator
-echo Failed. Creating icon only for current user.
-
-xcopy /y "%install_path%\time2backup.lnk" "%UserProfile%\Desktop\"
-if %errorlevel% NEQ 0 echo Failed. Please create icon manually.
+echo Failed. Creating shortcut only for current user...
+xcopy /y "%install_path%\time2backup.lnk" "%AppData%\Microsoft\Windows\Start Menu\Programs\"
+if %errorlevel% NEQ 0 echo Failed. Please create shortcut manually.
 
 goto endOK
 
