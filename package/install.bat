@@ -69,7 +69,7 @@ echo Set shell = CreateObject^("WScript.shell"^)
 echo Set link = shell.CreateShortcut^("%install_path%\time2backup.lnk"^)
 echo link.Description = "Backup and restore your files"
 echo link.TargetPath = "%install_path%\time2backup.bat"
-echo link.IconLocation = "%install_path%\icon_dark.ico"
+echo link.IconLocation = "%install_path%\icon.ico"
 echo link.WorkingDirectory = "%install_path%"
 echo link.Save
 )> "%current_path%\files\create_link.vbs"
